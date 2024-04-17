@@ -16,3 +16,7 @@ MonoBehaviour:
   _fireRate: 5
   _baseDamage: 10
   _baseReloadTime: 3
+  _distance: 100
+  _bulletsPerShot: 1
+  _useSpread: 1
+  _spreadFactor: 1
