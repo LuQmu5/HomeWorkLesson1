@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8748914999f48b4eb7e8dd8e1562775, type: 3}
-  m_Name: PG-2400
+  m_Name: Plasmagun
   m_EditorClassIdentifier: 
   _maxBulletsInClip: 30
   _fireRate: 5
@@ -19,4 +19,5 @@ MonoBehaviour:
   _distance: 100
   _bulletsPerShot: 1
   _useSpread: 1
-  _spreadFactor: 1
+  _isInfinityBullets: 0
+  _spreadFactor: 0.05
