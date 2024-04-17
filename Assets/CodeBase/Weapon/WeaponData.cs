@@ -10,6 +10,7 @@ public class WeaponData : ScriptableObject
     [SerializeField, Min(0)] private float _distance = Mathf.Infinity;
     [SerializeField, Min(1)] private int _bulletsPerShot = 1;
     [SerializeField] private bool _useSpread;
+    [SerializeField] private bool _isInfinityBullets;
     [SerializeField, Min(0)] private float _spreadFactor = 1;
 
     public int MaxBulletsInClip => _maxBulletsInClip;
@@ -20,4 +21,5 @@ public class WeaponData : ScriptableObject
     public int BulletsPerShot => _bulletsPerShot;   
     public bool UseSpread => _useSpread;
     public float SpreadFactor => _spreadFactor;
+    public bool IsInfinityBullets => _isInfinityBullets;
 }

@@ -34,13 +34,17 @@ public class SimpleRiffle : Weapon
         for (int i = 0; i < Data.BulletsPerShot; i++)
         {
             CreateRaycast();
-            CurrentBullets--;
+
+            if (Data.IsInfinityBullets == false)
+                CurrentBullets--;
+
+            OnBulletsChanged();
         }
     }
 
     private void CreateRaycast()
     {
-        Vector3 direction = Data.UseSpread ? transform.forward + CalculateSpread() : transform.forward;
+        Vector3 direction = Data.UseSpread ? ShootPoint.forward + CalculateSpread() : transform.forward;
         Ray ray = new Ray(ShootPoint.position, direction);
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, Data.Distance, _hittableMask))
@@ -50,6 +54,7 @@ public class SimpleRiffle : Weapon
             if (hitCollider.TryGetComponent(out IHealth health))
             {
                 health.ApplyDamage(Data.BaseDamage);
+                print(health.Current);
             }
         }
     }
@@ -69,6 +74,7 @@ public class SimpleRiffle : Weapon
         yield return new WaitForSeconds(Data.BaseReloadTime);
 
         CurrentBullets = Data.MaxBulletsInClip;
+        OnBulletsChanged();
         _reloadingCoroutine = null;
     }
 
@@ -82,7 +88,7 @@ public class SimpleRiffle : Weapon
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        Ray ray = new Ray(ShootPoint.position, transform.forward);
+        Ray ray = new Ray(ShootPoint.position, ShootPoint.forward);
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, Data.Distance, _hittableMask))
         {

@@ -1,8 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] private Weapon _currentWeapon;
+
+    public event Action<Weapon> WeaponChanged;
+
+    private void Start()
+    {
+        WeaponChanged?.Invoke(_currentWeapon);
+    }
 
     private void Update()
     {
