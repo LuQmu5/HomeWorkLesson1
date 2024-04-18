@@ -13,6 +13,6 @@ public class DestroyableObstacle : MonoBehaviour, IHealth
         Current -= amount;
 
         if (Current <= 0)
-            Destroy(gameObject);
+            gameObject.SetActive(false);
     }
 }

@@ -34,5 +34,6 @@ public class BootstrapState : IState
     private void RegisterServices()
     {
         _services.RegisterSingle<IGameStateMachine>(_stateMachine);
+        _services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IGameStateMachine>()));
     }
 }
