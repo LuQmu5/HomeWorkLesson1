@@ -7,7 +7,6 @@ public class WeaponData : ScriptableObject
     [SerializeField] private float _fireRate;
     [SerializeField, Min(0)] private float _baseDamage;
     [SerializeField] private float _baseReloadTime;
-    [SerializeField, Min(0)] private float _distance = Mathf.Infinity;
     [SerializeField, Min(1)] private int _bulletsPerShot = 1;
     [SerializeField] private bool _useSpread;
     [SerializeField] private bool _isInfinityBullets;
@@ -17,7 +16,6 @@ public class WeaponData : ScriptableObject
     public float FireRate => _fireRate;
     public float BaseDamage => _baseDamage;
     public float BaseReloadTime => _baseReloadTime;
-    public float Distance => _distance;
     public int BulletsPerShot => _bulletsPerShot;   
     public bool UseSpread => _useSpread;
     public float SpreadFactor => _spreadFactor;

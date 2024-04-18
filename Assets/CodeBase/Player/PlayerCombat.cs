@@ -19,12 +19,12 @@ public class PlayerCombat : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            _currentWeapon.Shoot();
+            _currentWeapon.TryShoot();
         }
 
         if (Input.GetKey(KeyCode.R))
         {
-            _currentWeapon.Reload();
+            _currentWeapon.TryReload();
         }
 
         if (Input.GetKeyDown(KeyCode.Q))

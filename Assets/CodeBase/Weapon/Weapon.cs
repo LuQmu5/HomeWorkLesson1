@@ -7,7 +7,6 @@ public class Weapon : MonoBehaviour
 {
     [SerializeField] private WeaponData _data;
     [SerializeField] private Transform _shootPoint;
-    [SerializeField] private LayerMask _hittableMask;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private Bullet _bulletPrefab;
 
@@ -35,7 +34,7 @@ public class Weapon : MonoBehaviour
         _internalReloadingCoroutine = null;
     }
 
-    public void Reload()
+    public void TryReload()
     {
         if (_reloadingCoroutine != null)
             return;
@@ -43,7 +42,7 @@ public class Weapon : MonoBehaviour
         _reloadingCoroutine = StartCoroutine(Reloading());
     }
 
-    public void Shoot()
+    public void TryShoot()
     {
         if (_currentBullets < _data.BulletsPerShot)
             return;
@@ -62,7 +61,8 @@ public class Weapon : MonoBehaviour
 
         for (int i = 0; i < _data.BulletsPerShot; i++)
         {
-            CreateRaycast();
+            Vector3 direction = _data.UseSpread ? _shootPoint.forward + CalculateSpread() : transform.forward;
+            CreateBullet(direction);
 
             if (_data.IsInfinityBullets == false)
             {
@@ -72,30 +72,11 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void CreateRaycast()
-    {
-        Vector3 direction = _data.UseSpread ? _shootPoint.forward + CalculateSpread() : transform.forward;
-        Ray ray = new Ray(_shootPoint.position, direction);
-
-        CreateBullet(direction);
-
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, _data.Distance, _hittableMask))
-        {
-            Collider hitCollider = hitInfo.collider;
-
-            if (hitCollider.TryGetComponent(out IHealth health))
-            {
-                health.ApplyDamage(_data.BaseDamage);
-                print(health.Current);
-            }
-        }
-    }
-
     private void CreateBullet(Vector3 direction)
     {
         Bullet bullet = Instantiate(_bulletPrefab, _shootPoint);
         bullet.transform.parent = null;
-        bullet.Init(direction);
+        bullet.Init(direction, _data.BaseDamage);
     }
 
     private Vector3 CalculateSpread()
@@ -124,33 +105,4 @@ public class Weapon : MonoBehaviour
 
         _internalReloadingCoroutine = null;
     }
-
-
-#if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
-    {
-        Ray ray = new Ray(_shootPoint.position, _shootPoint.forward);
-
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, _data.Distance, _hittableMask))
-        {
-            DrawRay(ray, hitInfo.point, hitInfo.distance, Color.red);
-        }
-        else
-        {
-            Vector3 hitPosition = ray.origin + ray.direction * _data.Distance;
-
-            DrawRay(ray, hitPosition, _data.Distance, Color.green);
-        }
-    }
-
-    private static void DrawRay(Ray ray, Vector3 hitPosition, float distance, Color color)
-    {
-        const float hitPointRadius = 0.15f;
-
-        Debug.DrawRay(ray.origin, ray.direction * distance, color);
-
-        Gizmos.color = color;
-        Gizmos.DrawSphere(hitPosition, hitPointRadius);
-    }
-#endif
 }
