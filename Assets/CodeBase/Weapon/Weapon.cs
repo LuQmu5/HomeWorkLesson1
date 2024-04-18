@@ -17,10 +17,22 @@ public class Weapon : MonoBehaviour
 
     public event UnityAction<int, int> BulletsChanged;
 
-    private void Awake()
+    private void Start()
     {
         _currentBullets = _data.MaxBulletsInClip;
         BulletsChanged?.Invoke(_currentBullets, _data.MaxBulletsInClip);
+    }
+
+    public void ResetState()
+    {
+        if (_reloadingCoroutine != null)
+            StopCoroutine(_reloadingCoroutine);
+
+        if (_internalReloadingCoroutine != null)
+            StopCoroutine(_internalReloadingCoroutine);
+
+        _reloadingCoroutine = null;
+        _internalReloadingCoroutine = null;
     }
 
     public void Reload()

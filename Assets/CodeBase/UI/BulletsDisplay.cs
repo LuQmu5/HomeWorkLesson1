@@ -9,12 +9,12 @@ public class BulletsDisplay : MonoBehaviour
 
     private Weapon _currentWeapon;
 
-    private void OnEnable()
+    private void Awake()
     {
         _playerCombat.WeaponChanged += OnPlayerWeaponChanged;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         _playerCombat.WeaponChanged -= OnPlayerWeaponChanged;
     }

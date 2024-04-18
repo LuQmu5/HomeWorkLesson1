@@ -20,4 +20,4 @@ MonoBehaviour:
   _bulletsPerShot: 3
   _useSpread: 1
   _isInfinityBullets: 0
-  _spreadFactor: 2
+  _spreadFactor: 0.5
