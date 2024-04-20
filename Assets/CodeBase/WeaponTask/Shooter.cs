@@ -13,7 +13,7 @@ public class Shooter
 
     public bool TryShoot()
     {
-        if (_currentWeapon == null) 
+        if (_currentWeapon == null || _currentWeapon is not IShootable) 
             return false;
 
         return _currentWeapon.TryShoot();
@@ -21,7 +21,7 @@ public class Shooter
 
     public bool TryReload()
     {
-        if (_currentWeapon == null)
+        if (_currentWeapon == null || _currentWeapon is not IReloadable)
             return false;
 
         return _currentWeapon.TryReload();
