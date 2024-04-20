@@ -1,0 +1,84 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Weapon : ObjectPool<Bullet>, IReloadable
+{
+    private float _damage;
+    private float _fireRate;
+    private float _reloadTime;
+
+    private Transform _shootPoint;
+    private int _maxBulletsCount;
+    private int _currentBulletsCount;
+    private float _bulletSpeed;
+
+    private ICoroutineRunner _coroutineRunner;
+    private Coroutine _reloadingCoroutine;
+    private Coroutine _shootDelayingCoroutine;
+
+    public float ReloadTime { get => _reloadTime; }
+    public int MaxBullets { get => _maxBulletsCount; }
+    public int CurrentBullets { get => _currentBulletsCount; }
+    public bool IsCanShoot { get => _reloadingCoroutine == null && _shootDelayingCoroutine == null; }
+
+
+    public Weapon(WeaponStaticData data, ICoroutineRunner coroutineRunner)
+    {
+        _coroutineRunner = coroutineRunner;
+
+        _damage = data.Damage;
+        _fireRate = data.FireRate;
+        _reloadTime = data.ReloadTime;
+
+        _shootPoint = data.WeaponView.ShootPoint;
+        _maxBulletsCount = data.MaxBulletsCount;
+        _currentBulletsCount = data.MaxBulletsCount;
+        _bulletSpeed = data.BulletSpeed;
+
+        InitPool(data.BulletPrefab);
+    }
+
+    public bool TryReload()
+    {
+        if (_reloadingCoroutine != null)
+            return false;
+
+        _reloadingCoroutine = _coroutineRunner.StartCoroutine(Reloading());
+
+        return true;
+    }
+
+    public bool TryShoot()
+    {
+        if (IsCanShoot == false)
+            return false;
+
+        LaunchBullet();
+        _shootDelayingCoroutine = _coroutineRunner.StartCoroutine(ShootDelaying());
+
+        return true;
+    }
+
+    private void LaunchBullet()
+    {
+        Bullet bullet = GetItem();
+        bullet.gameObject.SetActive(true);
+        bullet.Launch(_shootPoint.position, _shootPoint.forward, _damage, _bulletSpeed);
+    }
+
+    private IEnumerator ShootDelaying()
+    {
+        yield return new WaitForSeconds(1 / _fireRate);
+
+        _shootDelayingCoroutine = null;
+    }
+
+    private IEnumerator Reloading()
+    {
+        yield return new WaitForSeconds(_reloadTime);
+
+        _currentBulletsCount = _maxBulletsCount;
+        _reloadingCoroutine = null;
+    }
+}
