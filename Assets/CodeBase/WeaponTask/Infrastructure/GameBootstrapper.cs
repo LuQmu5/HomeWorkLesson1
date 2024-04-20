@@ -9,8 +9,8 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
 
     private void Awake()
     {
-        PlayerInventory playerInventory = new PlayerInventory(Resources.LoadAll<WeaponStaticData>(WeaponsPath), this, _player.WeaponPoint);
-        Shooter playerShooter = new Shooter();
+        WeaponInventory playerInventory = new WeaponInventory(Resources.LoadAll<WeaponStaticData>(WeaponsPath), this, _player.WeaponPoint);
+        WeaponShooter playerShooter = new WeaponShooter();
         WeaponSwitcher playerWeaponSwitcher = new WeaponSwitcher(playerInventory, playerShooter);
         Weapon playerStartWeapon = playerInventory.GetWeaponByIndex(0);
 

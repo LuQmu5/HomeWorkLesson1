@@ -2,15 +2,15 @@ using System;
 
 public class WeaponSwitcher
 {
-    private readonly PlayerInventory _inventory;
-    private readonly Shooter _shooter;
+    private readonly WeaponInventory _inventory;
+    private readonly WeaponShooter _shooter;
 
     private int _currentWeaponIndex;
     private Weapon _currentWeapon;
 
     public event Action<Weapon> WeaponSwitched;
 
-    public WeaponSwitcher(PlayerInventory inventory, Shooter shooter)
+    public WeaponSwitcher(WeaponInventory inventory, WeaponShooter shooter)
     {
         _inventory = inventory;
         _shooter = shooter;

@@ -1,4 +1,4 @@
-public class Shooter
+public class WeaponShooter
 {
     private Weapon _currentWeapon;
 

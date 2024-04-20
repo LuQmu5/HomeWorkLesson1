@@ -4,13 +4,13 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private Transform _weaponPoint;
 
-    private PlayerInventory _inventory;
-    private Shooter _shooter;
+    private WeaponInventory _inventory;
+    private WeaponShooter _shooter;
     private WeaponSwitcher _weaponSwitcher;
 
     public Transform WeaponPoint => _weaponPoint;
 
-    public void Construct(PlayerInventory inventory, Shooter shooter, WeaponSwitcher weaponSwitcher, Weapon startWeapon)
+    public void Construct(WeaponInventory inventory, WeaponShooter shooter, WeaponSwitcher weaponSwitcher, Weapon startWeapon)
     {
         _inventory = inventory;
         _shooter = shooter;

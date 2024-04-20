@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+// тут будут свистоперделки
 public class WeaponView : MonoBehaviour
 {
     [SerializeField] private Transform _shootPoint;
