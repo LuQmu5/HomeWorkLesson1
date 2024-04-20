@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Weapon : ObjectPool<Bullet>, IReloadable
 {
+    private WeaponView _weaponView;
+    private ICoroutineRunner _coroutineRunner;
+
     private float _damage;
     private float _fireRate;
     private float _reloadTime;
 
-    private Transform _shootPoint;
     private int _maxBulletsCount;
     private int _currentBulletsCount;
     private float _bulletSpeed;
 
-    private ICoroutineRunner _coroutineRunner;
     private Coroutine _reloadingCoroutine;
     private Coroutine _shootDelayingCoroutine;
 
@@ -23,15 +24,15 @@ public class Weapon : ObjectPool<Bullet>, IReloadable
     public bool IsCanShoot { get => _reloadingCoroutine == null && _shootDelayingCoroutine == null; }
 
 
-    public Weapon(WeaponStaticData data, ICoroutineRunner coroutineRunner)
+    public Weapon(WeaponStaticData data, ICoroutineRunner coroutineRunner, Transform container)
     {
+        _weaponView = Object.Instantiate(data.WeaponView, container);
         _coroutineRunner = coroutineRunner;
 
         _damage = data.Damage;
         _fireRate = data.FireRate;
         _reloadTime = data.ReloadTime;
 
-        _shootPoint = data.WeaponView.ShootPoint;
         _maxBulletsCount = data.MaxBulletsCount;
         _currentBulletsCount = data.MaxBulletsCount;
         _bulletSpeed = data.BulletSpeed;
@@ -39,11 +40,28 @@ public class Weapon : ObjectPool<Bullet>, IReloadable
         InitPool(data.BulletPrefab);
     }
 
+    public void Activate()
+    {
+        _weaponView.gameObject.SetActive(true);
+    }
+
+    public void Deactivate()
+    {
+        _weaponView.gameObject.SetActive(false);
+
+        if (_reloadingCoroutine != null)
+            _coroutineRunner.StopCoroutine(_reloadingCoroutine);
+
+        if (_shootDelayingCoroutine != null)
+            _coroutineRunner.StopCoroutine(_shootDelayingCoroutine);
+    }
+
     public bool TryReload()
     {
         if (_reloadingCoroutine != null)
             return false;
 
+        _weaponView.Reload();
         _reloadingCoroutine = _coroutineRunner.StartCoroutine(Reloading());
 
         return true;
@@ -54,6 +72,7 @@ public class Weapon : ObjectPool<Bullet>, IReloadable
         if (IsCanShoot == false)
             return false;
 
+        _weaponView.Shoot();
         LaunchBullet();
         _shootDelayingCoroutine = _coroutineRunner.StartCoroutine(ShootDelaying());
 
@@ -64,7 +83,8 @@ public class Weapon : ObjectPool<Bullet>, IReloadable
     {
         Bullet bullet = GetItem();
         bullet.gameObject.SetActive(true);
-        bullet.Launch(_shootPoint.position, _shootPoint.forward, _damage, _bulletSpeed);
+        bullet.Launch(_weaponView.ShootPoint.position, _weaponView.ShootPoint.forward, _damage, _bulletSpeed);
+        _currentBulletsCount--;
     }
 
     private IEnumerator ShootDelaying()
