@@ -25,4 +25,12 @@ public class PlayerInventory
 
         return true;
     }
+
+    public void AddNewWeapon(Weapon weapon)
+    {
+        if (weapon == null)
+            throw new NullReferenceException();
+
+        _weapons.Add(weapon);
+    }
 }
