@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Weapon : ObjectPool<Bullet>, IReloadable
@@ -18,15 +18,16 @@ public class Weapon : ObjectPool<Bullet>, IReloadable
     private Coroutine _reloadingCoroutine;
     private Coroutine _shootDelayingCoroutine;
 
+    public event Action Shoted;
+
     public float ReloadTime { get => _reloadTime; }
     public int MaxBullets { get => _maxBulletsCount; }
     public int CurrentBullets { get => _currentBulletsCount; }
     public bool CanShoot { get => _reloadingCoroutine == null && _shootDelayingCoroutine == null && _currentBulletsCount > 0; }
 
-
     public Weapon(WeaponStaticData data, ICoroutineRunner coroutineRunner, Transform container)
     {
-        _weaponView = Object.Instantiate(data.WeaponView, container);
+        _weaponView = UnityEngine.Object.Instantiate(data.WeaponView, container);
         _coroutineRunner = coroutineRunner;
 
         _damage = data.Damage;
@@ -77,6 +78,8 @@ public class Weapon : ObjectPool<Bullet>, IReloadable
 
         _weaponView.Shoot();
         LaunchBullet();
+        Shoted?.Invoke();
+
         _shootDelayingCoroutine = _coroutineRunner.StartCoroutine(ShootDelaying());
 
         return true;

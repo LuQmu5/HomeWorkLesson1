@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
-using UnityEngine;
-
 public class Shooter
 {
     private Weapon _currentWeapon;
+
+    public Weapon CurrentWeapon => _currentWeapon;
 
     public void SetWeapon(Weapon weapon)
     {

@@ -14,16 +14,12 @@ public class PlayerInventory
             _weapons.Add(new Weapon(data, coroutineRunner, container));
     }
 
-    public bool TryGetWeaponByIndex(out Weapon weapon, int index)
+    public Weapon GetWeaponByIndex(int index)
     {
-        weapon = null;
-
         if (index < 0 || index >= _weapons.Count)
-            return false;
+            throw new IndexOutOfRangeException();
 
-        weapon = _weapons[index];
-
-        return true;
+        return _weapons[index];
     }
 
     public void AddNewWeapon(Weapon weapon)

@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
 public class WeaponSwitcher
 {
     private readonly PlayerInventory _inventory;
     private readonly Shooter _shooter;
 
-    private int _currentWeaponIndex = -1;
+    private int _currentWeaponIndex;
     private Weapon _currentWeapon;
+
+    public event Action<Weapon> WeaponSwitched;
 
     public WeaponSwitcher(PlayerInventory inventory, Shooter shooter)
     {
@@ -16,7 +16,7 @@ public class WeaponSwitcher
         _shooter = shooter;
     }
 
-    public void SwitchWeapon()
+    public void SwitchToNextWeapon()
     {
         if (_currentWeapon != null)
             _currentWeapon.Deactivate();
@@ -26,10 +26,10 @@ public class WeaponSwitcher
         if (_currentWeaponIndex >= _inventory.WeaponsCount)
             _currentWeaponIndex = 0;
 
-        if (_inventory.TryGetWeaponByIndex(out _currentWeapon, _currentWeaponIndex))
-        {
-            _currentWeapon.Activate();
-            _shooter.SetWeapon(_currentWeapon);
-        }
+        _currentWeapon = _inventory.GetWeaponByIndex(_currentWeaponIndex);
+        _currentWeapon.Activate();
+        _shooter.SetWeapon(_currentWeapon);
+
+        WeaponSwitched?.Invoke(_currentWeapon);
     }
 }
