@@ -29,7 +29,7 @@ public class WeaponSwitcher
         if (_inventory.TryGetWeaponByIndex(out _currentWeapon, _currentWeaponIndex))
         {
             _currentWeapon.Activate();
-            _shooter.SetNewWeapon(_currentWeapon);
+            _shooter.SetWeapon(_currentWeapon);
         }
     }
 }

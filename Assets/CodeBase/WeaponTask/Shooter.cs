@@ -6,7 +6,7 @@ public class Shooter
 {
     private Weapon _currentWeapon;
 
-    public void SetNewWeapon(Weapon weapon)
+    public void SetWeapon(Weapon weapon)
     {
         _currentWeapon = weapon;
     }
