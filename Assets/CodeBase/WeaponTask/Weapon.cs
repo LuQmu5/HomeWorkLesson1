@@ -21,7 +21,7 @@ public class Weapon : ObjectPool<Bullet>, IReloadable
     public float ReloadTime { get => _reloadTime; }
     public int MaxBullets { get => _maxBulletsCount; }
     public int CurrentBullets { get => _currentBulletsCount; }
-    public bool IsCanShoot { get => _reloadingCoroutine == null && _shootDelayingCoroutine == null; }
+    public bool CanShoot { get => _reloadingCoroutine == null && _shootDelayingCoroutine == null && _currentBulletsCount > 0; }
 
 
     public Weapon(WeaponStaticData data, ICoroutineRunner coroutineRunner, Transform container)
@@ -43,17 +43,20 @@ public class Weapon : ObjectPool<Bullet>, IReloadable
     public void Activate()
     {
         _weaponView.gameObject.SetActive(true);
+
+        _reloadingCoroutine = null;
+        _shootDelayingCoroutine = null;
     }
 
     public void Deactivate()
     {
-        _weaponView.gameObject.SetActive(false);
-
         if (_reloadingCoroutine != null)
             _coroutineRunner.StopCoroutine(_reloadingCoroutine);
 
         if (_shootDelayingCoroutine != null)
             _coroutineRunner.StopCoroutine(_shootDelayingCoroutine);
+
+        _weaponView.gameObject.SetActive(false);
     }
 
     public bool TryReload()
@@ -69,7 +72,7 @@ public class Weapon : ObjectPool<Bullet>, IReloadable
 
     public bool TryShoot()
     {
-        if (IsCanShoot == false)
+        if (CanShoot == false)
             return false;
 
         _weaponView.Shoot();

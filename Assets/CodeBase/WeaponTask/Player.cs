@@ -30,5 +30,10 @@ public class Player : MonoBehaviour
         {
             _shooter.TryReload();
         }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            _weaponSwitcher.SwitchWeapon();
+        }
     }
 }
