@@ -2,13 +2,13 @@
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Transform _inventoryContainer;
+    [SerializeField] private Transform _weaponPoint;
 
     private PlayerInventory _inventory;
     private Shooter _shooter;
     private WeaponSwitcher _weaponSwitcher;
 
-    public Transform InventoryContainer => _inventoryContainer;
+    public Transform WeaponPoint => _weaponPoint;
 
     public void Construct(PlayerInventory inventory)
     {

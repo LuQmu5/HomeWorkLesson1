@@ -8,7 +8,7 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
     private void Awake()
     {
         Player player = Resources.Load<Player>(PlayerPath);
-        PlayerInventory playerInventory = new PlayerInventory(Resources.LoadAll<WeaponStaticData>(WeaponsPath), this, player.InventoryContainer);
+        PlayerInventory playerInventory = new PlayerInventory(Resources.LoadAll<WeaponStaticData>(WeaponsPath), this, player.WeaponPoint);
 
         player.Construct(playerInventory);
     }
