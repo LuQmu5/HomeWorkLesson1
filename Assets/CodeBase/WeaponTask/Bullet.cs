@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -14,6 +15,8 @@ public class Bullet : MonoBehaviour
         _damage = damage;
 
         _rigidbody.velocity = direction.normalized * speed;
+
+        StartCoroutine(Deactivating());
     }
 
     private void OnTriggerEnter(Collider other)
@@ -22,6 +25,13 @@ public class Bullet : MonoBehaviour
         {
             health.ApplyDamage(_damage);
         }
+
+        gameObject.SetActive(false);
+    }
+
+    private IEnumerator Deactivating()
+    {
+        yield return new WaitForSeconds(2);
 
         gameObject.SetActive(false);
     }
