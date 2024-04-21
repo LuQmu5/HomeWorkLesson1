@@ -7,8 +7,12 @@ using UnityEngine.UI;
 public class SelectGameModeMenu : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown _gameModesDropdown;
+    [SerializeField] private Button _startGameButton;
 
     private Dictionary<int, GameMode> _gameModesMap = new Dictionary<int, GameMode>();
+    private GameMode _currentSelectedGameMode;
+
+    public event Action<GameMode> StartGameButtonPressed;
 
     public void Init(IReadOnlyCollection<GameMode> gameModes)
     {
@@ -21,15 +25,26 @@ public class SelectGameModeMenu : MonoBehaviour
         }
 
         _gameModesDropdown.onValueChanged.AddListener(OnGameModeSelected);
+        _startGameButton.onClick.AddListener(OnStartGameButtonClicked);
     }
 
     private void OnDestroy()
     {
         _gameModesDropdown.onValueChanged.RemoveListener(OnGameModeSelected);
+        _startGameButton.onClick.RemoveListener(OnStartGameButtonClicked);
     }
 
     private void OnGameModeSelected(int index)
     {
-        print(_gameModesMap[index].Target);
+        _currentSelectedGameMode = _gameModesMap[index];
+
+        print(_currentSelectedGameMode.Target);
+    }
+
+    private void OnStartGameButtonClicked()
+    {
+        StartGameButtonPressed?.Invoke(_currentSelectedGameMode);
+
+        print(_currentSelectedGameMode.Target);
     }
 }

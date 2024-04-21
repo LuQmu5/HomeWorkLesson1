@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(Rigidbody))]
@@ -10,6 +11,8 @@ public class Ball : MonoBehaviour
     [SerializeField] private Rigidbody _rigidbody;
 
     public BallTypes Type { get; private set; }
+
+    public static event UnityAction<BallTypes> Destroyed;
 
     public void Init(BallData data, Vector3 position)
     {

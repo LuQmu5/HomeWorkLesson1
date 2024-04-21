@@ -1,25 +1,31 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class BallSpawner : MonoBehaviour
+public class BallFactory
 {
-    [SerializeField] private Ball _ballPrefab;
-    [SerializeField] private int _ballsCountOnLevel = 50;
-    [SerializeField] private float _timeBetweenSpawn = 0.1f;
+    private const float TimeBetweenSpawn = 0.1f;
 
+
+    private Ball _ballPrefab;
     private BallData[] _ballsData;
     private Ball[] _balls;
     private WaitForSeconds _spawnDelay;
+    private int _ballsCountOnLevel;
 
-    public void Init(BallData[] ballsData)
+    public IReadOnlyCollection<Ball> Balls => _balls;
+
+    public BallFactory(BallData[] ballsData, Ball ballPrefab, int ballsCountOnLevel = 50)
     {
+        _ballPrefab = ballPrefab;
+        _ballsCountOnLevel = ballsCountOnLevel;
         _ballsData = ballsData;
         _balls = new Ball[_ballsCountOnLevel];
-        _spawnDelay = new WaitForSeconds(_timeBetweenSpawn);
+        _spawnDelay = new WaitForSeconds(TimeBetweenSpawn);
 
         for (int i = 0; i < _ballsCountOnLevel; i++)
         {
-            Ball newBall = Instantiate(_ballPrefab, transform);
+            Ball newBall = Object.Instantiate(_ballPrefab);
             newBall.gameObject.SetActive(false);
             _balls[i] = newBall;
         }

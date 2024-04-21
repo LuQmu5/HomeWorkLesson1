@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,35 +5,32 @@ using UnityEngine;
 public class GameBootstrapper : MonoBehaviour
 {
     private const string BallsDataPath = "StaticData/Balls";
+    private const string BallPrefabPath = "Ball";
 
     [SerializeField] private SelectGameModeMenu _selectGameModeMenu;
-    [SerializeField] private BallSpawner _ballSpawner;
 
-    private BallData[] _ballsData;
-    private List<GameMode> _gameModes = new List<GameMode>();
+    private BallFactory _ballFactory;
+    private TargetReachHandler _targetReachHandler;
 
     private void Awake()
     {
-        _ballsData = Resources.LoadAll<BallData>(BallsDataPath);
-        _ballSpawner.Init(_ballsData);
+        _ballFactory = new BallFactory(Resources.LoadAll<BallData>(BallsDataPath), Resources.Load<Ball>(BallPrefabPath));
 
-        _gameModes.Add(new GameMode("”ничтожить все шары"));
-        _gameModes.Add(new GameMode("”ничтожить красные шары"));
-        _gameModes.Add(new GameMode("”ничтожить зелЄные шары"));
-        _gameModes.Add(new GameMode("”ничтожить белые шары"));
+        _selectGameModeMenu.Init(new List<GameMode>()
+        {
+            new DestroyAllGameMode(_ballFactory.Balls),
+            new DestroyAnyColorGameMode(_ballFactory.Balls, BallTypes.Red),
+            new DestroyAnyColorGameMode(_ballFactory.Balls, BallTypes.Green),
+            new DestroyAnyColorGameMode(_ballFactory.Balls, BallTypes.White),
+        });
 
-        _selectGameModeMenu.Init(_gameModes);
+        _selectGameModeMenu.StartGameButtonPressed += OnStartGameButtonPressed;
     }
-}
 
-public class GameMode
-{
-    public string Target;
-
-    public event Action TargetReached;
-
-    public GameMode(string target)
+    private void OnStartGameButtonPressed(GameMode chosenMode)
     {
-        Target = target;
+        _targetReachHandler = new TargetReachHandler(chosenMode);
+        _selectGameModeMenu.gameObject.SetActive(false);
+        _ballFactory.StartSpawn();
     }
 }
