@@ -4,6 +4,8 @@ public class TargetReachHandler
 {
     public TargetReachHandler(GameMode gameMode)
     {
+        gameMode.Subscribe();
+
         gameMode.TargetReached += OnTargetReached;
         gameMode.TargetFailed += OnTargetFailed;
     }

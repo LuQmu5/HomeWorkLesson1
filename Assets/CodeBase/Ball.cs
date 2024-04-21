@@ -10,17 +10,23 @@ public class Ball : MonoBehaviour
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private Rigidbody _rigidbody;
 
-    public BallTypes Type { get; private set; }
+    private BallTypes _type;
 
     public static event UnityAction<BallTypes> Destroyed;
 
     public void Init(BallData data, Vector3 position)
     {
-        Type = data.BallType;
+        _type = data.BallType;
         _meshRenderer.material = data.Material;
 
         transform.position = position;
         _rigidbody.AddForce(GetRandomForceDirection(), ForceMode.Impulse);
+    }
+
+    private void OnMouseDown()
+    {
+        Destroyed?.Invoke(_type);
+        gameObject.SetActive(false);
     }
 
     private Vector3 GetRandomForceDirection()

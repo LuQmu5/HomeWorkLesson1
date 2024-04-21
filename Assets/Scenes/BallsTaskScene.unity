@@ -1794,7 +1794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _selectGameModeMenu: {fileID: 643195180}
-  _ballFactory: {fileID: 2055038128}
+  _ballSpawnPosition: {fileID: 2055038127}
 --- !u!4 &1377122887
 Transform:
   m_ObjectHideFlags: 0
@@ -2447,7 +2447,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2055038127}
-  - component: {fileID: 2055038128}
   m_Layer: 0
   m_Name: BallsSpawner
   m_TagString: Untagged
@@ -2470,21 +2469,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2055038128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055038126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 716f3c4ef5a84604184e245d00251230, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ballPrefab: {fileID: 0}
-  _ballsCountOnLevel: 50
-  _timeBetweenSpawn: 0.1
 --- !u!1 &2065399489
 GameObject:
   m_ObjectHideFlags: 0

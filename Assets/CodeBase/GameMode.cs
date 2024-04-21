@@ -13,7 +13,10 @@ public abstract class GameMode
     public GameMode(IReadOnlyCollection<Ball> balls)
     {
         Balls = balls;
+    }
 
+    public void Subscribe()
+    {
         Ball.Destroyed += OnBallDestroyed;
     }
 

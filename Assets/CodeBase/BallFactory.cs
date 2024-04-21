@@ -6,8 +6,8 @@ public class BallFactory
 {
     private const float TimeBetweenSpawn = 0.1f;
 
+    private readonly ICoroutineRunner _coroutineRunner;
 
-    private Ball _ballPrefab;
     private BallData[] _ballsData;
     private Ball[] _balls;
     private WaitForSeconds _spawnDelay;
@@ -15,33 +15,33 @@ public class BallFactory
 
     public IReadOnlyCollection<Ball> Balls => _balls;
 
-    public BallFactory(BallData[] ballsData, Ball ballPrefab, int ballsCountOnLevel = 50)
+    public BallFactory(ICoroutineRunner coroutineRunner, BallData[] ballsData, Ball ballPrefab, int ballsCountOnLevel = 50)
     {
-        _ballPrefab = ballPrefab;
         _ballsCountOnLevel = ballsCountOnLevel;
+        _coroutineRunner = coroutineRunner;
         _ballsData = ballsData;
         _balls = new Ball[_ballsCountOnLevel];
         _spawnDelay = new WaitForSeconds(TimeBetweenSpawn);
 
         for (int i = 0; i < _ballsCountOnLevel; i++)
         {
-            Ball newBall = Object.Instantiate(_ballPrefab);
+            Ball newBall = Object.Instantiate(ballPrefab);
             newBall.gameObject.SetActive(false);
             _balls[i] = newBall;
         }
     }
 
-    public void StartSpawn()
+    public void StartSpawn(Vector3 at)
     {
-        StartCoroutine(Spawning());
+        _coroutineRunner.StartCoroutine(Spawning(at));
     }
 
-    private IEnumerator Spawning()
+    private IEnumerator Spawning(Vector3 at)
     {
         foreach (Ball ball in _balls)
         {
             ball.gameObject.SetActive(true);
-            ball.Init(GetRandomBallData(), transform.position);
+            ball.Init(GetRandomBallData(), at);
 
             yield return _spawnDelay;
         }

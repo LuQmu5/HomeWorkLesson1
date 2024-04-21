@@ -37,14 +37,10 @@ public class SelectGameModeMenu : MonoBehaviour
     private void OnGameModeSelected(int index)
     {
         _currentSelectedGameMode = _gameModesMap[index];
-
-        print(_currentSelectedGameMode.Target);
     }
 
     private void OnStartGameButtonClicked()
     {
         StartGameButtonPressed?.Invoke(_currentSelectedGameMode);
-
-        print(_currentSelectedGameMode.Target);
     }
 }
