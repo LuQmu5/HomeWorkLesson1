@@ -11,6 +11,7 @@ public class DestroyAnyColorGameMode : GameMode
         Target = $"Уничтожить все {targetType} шары";
     }
 
+    // не работает
     protected override void OnBallDestroyed(BallTypes destroyedBallType)
     {
         if (destroyedBallType != _targetType)
