@@ -16,7 +16,7 @@ public class GameBootstrapper : MonoBehaviour
     {
         _ballsData = Resources.LoadAll<BallData>(BallsDataPath);
 
-        _selectGameModeMenu.Init(_ballsData);
+        _selectGameModeMenu.Init();
         _ballSpawner.Init(_ballsData);
     }
 }
