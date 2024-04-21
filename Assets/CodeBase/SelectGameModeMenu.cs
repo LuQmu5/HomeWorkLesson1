@@ -8,13 +8,28 @@ public class SelectGameModeMenu : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown _gameModesDropdown;
 
-    public void Init()
+    private Dictionary<int, GameMode> _gameModesMap = new Dictionary<int, GameMode>();
+
+    public void Init(IReadOnlyCollection<GameMode> gameModes)
     {
-        _gameModesDropdown.options.Add(new TMP_Dropdown.OptionData("test1"));
-        _gameModesDropdown.options.Add(new TMP_Dropdown.OptionData("test2"));
-        _gameModesDropdown.options.Add(new TMP_Dropdown.OptionData("test3"));
-        _gameModesDropdown.options.Add(new TMP_Dropdown.OptionData("test4"));
-        _gameModesDropdown.options.Add(new TMP_Dropdown.OptionData("test5"));
-        _gameModesDropdown.options.Add(new TMP_Dropdown.OptionData("test6"));
+        int index = -1;
+
+        foreach (GameMode gameMode in gameModes)
+        {
+            _gameModesDropdown.options.Add(new TMP_Dropdown.OptionData(gameMode.Target));
+            _gameModesMap.Add(++index, gameMode);
+        }
+
+        _gameModesDropdown.onValueChanged.AddListener(OnGameModeSelected);
+    }
+
+    private void OnDestroy()
+    {
+        _gameModesDropdown.onValueChanged.RemoveListener(OnGameModeSelected);
+    }
+
+    private void OnGameModeSelected(int index)
+    {
+        print(_gameModesMap[index].Target);
     }
 }
