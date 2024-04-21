@@ -6,8 +6,8 @@ public class ReputationIncreaser : MonoBehaviour, IInteractableObject
 
     public string InteractMessage { get => $"Press 'E' to increase reputation by {_reputationIncreaseValue}"; }
 
-    public void Interact()
+    public void Interact(Player player)
     {
-        
+        player.Reputation.IncreaseReputation(_reputationIncreaseValue);
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class InteractableObjectChecker : MonoBehaviour
 {
+    [SerializeField] private Player _player;
     [SerializeField] private InteractMessageDisplay _messageDisplay;
     [SerializeField] private float _interactDistance = 10;
 
@@ -10,7 +11,7 @@ public class InteractableObjectChecker : MonoBehaviour
     {
         if (CheckClosestInteractableObject(out IInteractableObject closestObject) && Input.GetKeyDown(KeyCode.E))
         {
-            closestObject.Interact();
+            closestObject.Interact(_player);
         }
     }
 

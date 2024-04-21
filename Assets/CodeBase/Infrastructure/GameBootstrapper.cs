@@ -3,9 +3,13 @@
 public class GameBootstrapper : MonoBehaviour
 {
     [SerializeField] private Player _player;
+    [SerializeField] private PlayerReputationDisplay _playerReputationDisplay;
 
     private void Awake()
     {
-        _player.Construct(new PlayerReputation());
+        PlayerReputation playerReputation = new PlayerReputation();
+
+        _player.Construct(playerReputation);
+        _playerReputationDisplay.Construct(playerReputation);
     }
 }
