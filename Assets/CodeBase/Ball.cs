@@ -22,7 +22,7 @@ public class Ball : MonoBehaviour
 
     private void OnEnable()
     {
-        ApplyRandomFroce(StartRandomForcePower);
+        ApplyRandomFroce(StartRandomForcePower, false);
     }
 
     private void OnMouseDown()
@@ -35,12 +35,12 @@ public class Ball : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void ApplyRandomFroce(float power)
+    public void ApplyRandomFroce(float power, bool isUp)
     {
         Vector3 randomVector = new Vector3
         {
             x = Random.Range(-power, power),
-            y = Random.Range(-power, power),
+            y = Random.Range(-power * System.Convert.ToInt32(!isUp), power * System.Convert.ToInt32(isUp)),
             z = Random.Range(-power, power)
         };
 

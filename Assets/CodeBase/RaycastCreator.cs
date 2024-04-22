@@ -16,7 +16,7 @@ public class RaycastCreator : MonoBehaviour
                 {
                     if (hitInfo.collider.TryGetComponent(out Ball ball))
                     {
-                        ball.ApplyRandomFroce(_forcePower);
+                        ball.ApplyRandomFroce(_forcePower, true);
                     }
                 }
             }

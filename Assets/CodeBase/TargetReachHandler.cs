@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TargetReachHandler
 {
@@ -15,12 +16,12 @@ public class TargetReachHandler
     private void OnTargetReached()
     {
         Debug.Log("Victory!");
-        Time.timeScale = 0;
+        SceneManager.LoadScene(0);
     }
 
     private void OnTargetFailed()
     {
         Debug.Log("Defeat...");
-        Time.timeScale = 0;
+        SceneManager.LoadScene(0);
     }
 }
