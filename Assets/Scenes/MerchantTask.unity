@@ -599,10 +599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ff044ad95cb881419160be2455a7e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _goods:
-  - {fileID: 11400000, guid: 15af1262280fa9b4dbe8ad1b9909f461, type: 2}
-  - {fileID: 11400000, guid: c4beb10915ade914885a627faafc295a, type: 2}
-  - {fileID: 11400000, guid: a2e5aaecde6aff748ab2d175a5106df5, type: 2}
+  _goodsType: 0
 --- !u!1 &1087955618
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,6 +646,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 1919726945}
   _playerReputationDisplay: {fileID: 1765419058}
+  _merchants:
+  - {fileID: 1047137065}
 --- !u!1 &1214807964
 GameObject:
   m_ObjectHideFlags: 0
