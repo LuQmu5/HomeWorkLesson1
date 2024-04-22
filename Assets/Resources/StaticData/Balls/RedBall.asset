@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 75082a2600394a54ab128ae2d4e70402, type: 3}
   m_Name: RedBall
-  m_EditorClassIdentifier: Assembly-CSharp::BallData
+  m_EditorClassIdentifier: 
   _ballType: 0
   _material: {fileID: 2100000, guid: 2149b47a7fc312448a6dc27b167d5400, type: 2}

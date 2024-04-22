@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DestroyAnyColorGameMode : GameMode
@@ -9,9 +10,10 @@ public class DestroyAnyColorGameMode : GameMode
     {
         _targetType = targetType;
         Target = $"Уничтожить все {targetType} шары";
+        BallsLeft = balls.Where(i => i.Type == targetType).Count();
+        Debug.Log(BallsLeft);
     }
 
-    // не работает
     protected override void OnBallDestroyed(BallTypes destroyedBallType)
     {
         if (destroyedBallType != _targetType)
@@ -20,18 +22,9 @@ public class DestroyAnyColorGameMode : GameMode
             return;
         }
 
-        bool isAnyBallActive = false;
+        BallsLeft--;
 
-        foreach (Ball ball in Balls)
-        {
-            if (ball.gameObject.activeSelf)
-            {
-                isAnyBallActive = true;
-                break;
-            }
-        }
-
-        if (isAnyBallActive == false)
+        if (BallsLeft == 0)
             OnTargetReached();
     }
 }

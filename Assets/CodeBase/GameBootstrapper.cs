@@ -34,6 +34,11 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
         _selectGameModeMenu.StartGameButtonPressed += OnStartGameButtonPressed;
     }
 
+    private void OnDestroy()
+    {
+        _selectGameModeMenu.StartGameButtonPressed -= OnStartGameButtonPressed;
+    }
+
     private void OnStartGameButtonPressed(GameMode chosenMode)
     {
         _targetReachHandler = new TargetReachHandler(chosenMode);

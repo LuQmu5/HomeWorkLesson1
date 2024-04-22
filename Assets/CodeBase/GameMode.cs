@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public abstract class GameMode
 {
-    protected IReadOnlyCollection<Ball> Balls;
+    protected int BallsLeft;
 
     public string Target { get; protected set; }
 
@@ -12,7 +12,6 @@ public abstract class GameMode
 
     public GameMode(IReadOnlyCollection<Ball> balls)
     {
-        Balls = balls;
     }
 
     public void Subscribe()

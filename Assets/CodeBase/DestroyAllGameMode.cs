@@ -1,27 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class DestroyAllGameMode : GameMode
 {
     public DestroyAllGameMode(IReadOnlyCollection<Ball> balls) : base(balls)
     {
+        BallsLeft = balls.Count;
         Target = "Уничтожить все шары";
     }
 
     protected override void OnBallDestroyed(BallTypes destroyedBallType)
     {
-        bool isAnyBallActive = false;
+        BallsLeft--;
 
-        foreach (Ball ball in Balls)
-        {
-            if (ball.gameObject.activeSelf)
-            {
-                isAnyBallActive = true;
-                break;
-            }
-        }
-
-        if (isAnyBallActive == false)
+        if (BallsLeft == 0)
             OnTargetReached();
     }
 }

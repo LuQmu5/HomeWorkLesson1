@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BallFactory
@@ -11,23 +12,24 @@ public class BallFactory
     private BallData[] _ballsData;
     private Ball[] _balls;
     private WaitForSeconds _spawnDelay;
-    private int _ballsCountOnLevel;
 
     public IReadOnlyCollection<Ball> Balls => _balls;
 
     public BallFactory(ICoroutineRunner coroutineRunner, BallData[] ballsData, Ball ballPrefab, int ballsCountOnLevel = 50)
     {
-        _ballsCountOnLevel = ballsCountOnLevel;
         _coroutineRunner = coroutineRunner;
-        _ballsData = ballsData;
-        _balls = new Ball[_ballsCountOnLevel];
         _spawnDelay = new WaitForSeconds(TimeBetweenSpawn);
 
-        for (int i = 0; i < _ballsCountOnLevel; i++)
+        _ballsData = ballsData;
+        _balls = new Ball[ballsCountOnLevel];
+
+        for (int i = 0; i < ballsCountOnLevel; i++)
         {
             Ball newBall = Object.Instantiate(ballPrefab);
-            newBall.gameObject.SetActive(false);
+
             _balls[i] = newBall;
+            _balls[i].Init(GetRandomBallData());
+            _balls[i].gameObject.SetActive(false);
         }
     }
 
@@ -41,11 +43,14 @@ public class BallFactory
         foreach (Ball ball in _balls)
         {
             ball.gameObject.SetActive(true);
-            ball.Init(GetRandomBallData(), at);
+            ball.transform.position = at;
 
             yield return _spawnDelay;
         }
     }
 
-    private BallData GetRandomBallData() => _ballsData[Random.Range(0, _ballsData.Length)];   
+    private BallData GetRandomBallData()
+    {
+        return _ballsData[Random.Range(0, _ballsData.Length)];
+    }
 }
