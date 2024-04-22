@@ -8,6 +8,7 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
 
     [Header("UI Settings")]
     [SerializeField] private SelectGameModeMenu _selectGameModeMenu;
+    [SerializeField] private TargetTextDisplay _targetTextDisplay;
 
     [Header("Balls Settings")]
     [SerializeField] private Transform _ballSpawnPosition;
@@ -26,10 +27,8 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
         _selectGameModeMenu.Init(new List<GameMode>()
         {
             new DestroyAllGameMode(_ballFactory.Balls),
-            new DestroyAnyColorGameMode(_ballFactory.Balls, BallTypes.Red),
-            new DestroyAnyColorGameMode(_ballFactory.Balls, BallTypes.Green),
-            new DestroyAnyColorGameMode(_ballFactory.Balls, BallTypes.White),
-            new DestroyAnyColorGameMode(_ballFactory.Balls, BallTypes.Yellow),
+            new DestroyAnyColorGameMode(_ballFactory.Balls),
+            new DestroyAnyNumberTypeGameMode(_ballFactory.Balls),
         });
 
         _selectGameModeMenu.StartGameButtonPressed += OnStartGameButtonPressed;
@@ -43,7 +42,11 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
     private void OnStartGameButtonPressed(GameMode chosenMode)
     {
         _targetReachHandler = new TargetReachHandler(chosenMode);
+
+        chosenMode.Init();
+        _targetTextDisplay.Init(chosenMode.Target);
         _selectGameModeMenu.gameObject.SetActive(false);
+
         _ballFactory.StartSpawn(_ballSpawnPosition.position);
     }
 }

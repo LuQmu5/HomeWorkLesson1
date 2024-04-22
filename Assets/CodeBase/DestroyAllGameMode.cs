@@ -10,7 +10,12 @@ public class DestroyAllGameMode : GameMode
         Target = "Уничтожить все шары";
     }
 
-    protected override void OnBallDestroyed(BallTypes destroyedBallType)
+    public override void Init()
+    {
+        Debug.Log("Init");
+    }
+
+    protected override void OnBallDestroyed(BallData destroyedBallData)
     {
         BallsLeft--;
 

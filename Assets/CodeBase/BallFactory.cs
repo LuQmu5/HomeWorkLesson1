@@ -42,7 +42,7 @@ public class BallFactory
 
     private static int GetBallsTypeCount()
     {
-        return System.Enum.GetValues(typeof(BallTypes)).Length;
+        return System.Enum.GetValues(typeof(BallColors)).Length;
     }
 
     public void StartSpawn(Vector3 at)

@@ -5,39 +5,41 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody))]
 public class Ball : MonoBehaviour
 {
-    private const float RandomForcePower = 3f;
+    private const float StartRandomForcePower = 3f;
 
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private Rigidbody _rigidbody;
 
-    public BallTypes Type { get; private set; }
+    public BallData Data { get; private set; }
 
-    public static event UnityAction<BallTypes> Destroyed;
+    public static event UnityAction<BallData> Destroyed;
 
     public void Init(BallData data)
     {
-        Type = data.BallType;
+        Data = data;
         _meshRenderer.material = data.Material;
     }
 
     private void OnEnable()
     {
-        _rigidbody.AddForce(GetRandomForceDirection(), ForceMode.Impulse);
+        ApplyRandomFroce(StartRandomForcePower);
     }
 
     private void OnMouseDown()
     {
-        Destroyed?.Invoke(Type);
+        Destroyed?.Invoke(Data);
         gameObject.SetActive(false);
     }
 
-    private Vector3 GetRandomForceDirection()
+    public void ApplyRandomFroce(float power)
     {
-        return new Vector3
+        Vector3 randomVector = new Vector3
         {
-            x = Random.Range(-RandomForcePower, RandomForcePower),
-            y = Random.Range(-RandomForcePower, 0),
-            z = Random.Range(-RandomForcePower, RandomForcePower)
+            x = Random.Range(-power, power),
+            y = Random.Range(-power, power),
+            z = Random.Range(-power, power)
         };
+
+        _rigidbody.AddForce(randomVector, ForceMode.Impulse);
     }
 }

@@ -14,6 +14,8 @@ public abstract class GameMode
     {
     }
 
+    public abstract void Init();
+
     public void Subscribe()
     {
         Ball.Destroyed += OnBallDestroyed;
@@ -29,5 +31,5 @@ public abstract class GameMode
         TargetFailed?.Invoke();
     }
 
-    protected abstract void OnBallDestroyed(BallTypes destroyedBallType);
+    protected abstract void OnBallDestroyed(BallData destroyedBallData);
 }
