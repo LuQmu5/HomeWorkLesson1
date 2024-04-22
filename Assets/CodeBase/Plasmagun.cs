@@ -35,10 +35,10 @@ public class Plasmagun : Weapon, IReloadable
 
     public override void Deactivate()
     {
-        base.Deactivate();
-
         if (_reloadingCoroutine != null)
             CoroutineRunner.StopCoroutine(_reloadingCoroutine);
+
+        base.Deactivate();
     }
 
     protected override void PerformShot()
