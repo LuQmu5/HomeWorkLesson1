@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24cc83638c35c1b44b7cd15027a543b6, type: 3}
-  m_Name: Plasmagun
+  m_Name: Railgun
   m_EditorClassIdentifier: 
-  _shotsPerSecond: 5
-  _damage: 1
-  _maxBulletsCount: 5
+  _shotsPerSecond: 1
+  _damage: 10
+  _maxBulletsCount: 1
   _bulletsPerShot: 1
   _bulletPrefab: {fileID: 3765500562310832437, guid: 86a549896c79841428d907e6e41d6577, type: 3}
-  _weaponView: {fileID: 8007449068106987350, guid: ce84be079a629d14db81040ac847b55c, type: 3}
-  _bulletSpeed: 1
-  _reloadTime: 1
+  _weaponView: {fileID: 8007449068106987350, guid: 941a580e90be56b4c93460074649786d, type: 3}
+  _bulletSpeed: 5
+  _reloadTime: 0

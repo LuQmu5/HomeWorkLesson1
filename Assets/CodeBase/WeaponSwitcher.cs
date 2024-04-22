@@ -5,7 +5,7 @@ public class WeaponSwitcher
     private readonly WeaponInventory _inventory;
     private readonly WeaponShooter _shooter;
 
-    private int _currentWeaponIndex;
+    private int _currentWeaponIndex = -1;
     private Weapon _currentWeapon;
 
     public event Action<Weapon> WeaponSwitched;
@@ -16,7 +16,7 @@ public class WeaponSwitcher
         _shooter = shooter;
     }
 
-    public void SwitchToNextWeapon()
+    public Weapon GetNextWeapon()
     {
         if (_currentWeapon != null)
             _currentWeapon.Deactivate();
@@ -28,8 +28,9 @@ public class WeaponSwitcher
 
         _currentWeapon = _inventory.GetWeaponByIndex(_currentWeaponIndex);
         _currentWeapon.Activate();
-        _shooter.SetWeapon(_currentWeapon);
 
         WeaponSwitched?.Invoke(_currentWeapon);
+
+        return _currentWeapon;
     }
 }

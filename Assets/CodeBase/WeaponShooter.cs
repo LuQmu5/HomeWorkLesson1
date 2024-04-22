@@ -22,6 +22,6 @@ public class WeaponShooter
         if (_currentWeapon == null || _currentWeapon is not IReloadable)
             return false;
 
-        return _currentWeapon.TryReload();
+        return ((IReloadable)_currentWeapon).TryReload();
     }
 }

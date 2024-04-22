@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Weapon Data", menuName = "Data/Weapons/Create Weapon Data", order = 54)]
-public class WeaponStaticData : ScriptableObject
+public class WeaponData : ScriptableObject
 {
     [SerializeField, Min(1)] private float _shotsPerSecond;
     [SerializeField, Min(0)] private float _damage;

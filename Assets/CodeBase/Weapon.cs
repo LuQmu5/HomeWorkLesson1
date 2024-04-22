@@ -1,117 +1,66 @@
-using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Weapon : ObjectPool<Bullet>, IReloadable
+public abstract class Weapon : ObjectPool<Bullet>, IShootable
 {
-    private WeaponView _weaponView;
-    private ICoroutineRunner _coroutineRunner;
+    protected readonly WeaponView View;
+    protected readonly WeaponData Data;
+    protected readonly ICoroutineRunner CoroutineRunner;
 
-    private float _damage;
-    private float _shotsPerSecond;
-    private float _reloadTime;
+    protected Coroutine ShootDelayingCoroutine;
+    protected float TimeBetweenShots;
 
-    private int _bulletsPerShot;
-    private int _maxBulletsCount;
-    private int _currentBulletsCount;
-    private float _bulletSpeed;
-
-    private Coroutine _reloadingCoroutine;
-    private Coroutine _shootDelayingCoroutine;
-
-    public event Action Shoted;
-
-    public float ReloadTime { get => _reloadTime; }
-    public int MaxBullets { get => _maxBulletsCount; }
-    public int CurrentBullets { get => _currentBulletsCount; }
-    public bool CanShoot { get => _reloadingCoroutine == null && _shootDelayingCoroutine == null && _currentBulletsCount > 0; }
-
-    public Weapon(WeaponStaticData data, ICoroutineRunner coroutineRunner, Transform container)
+    public Weapon(WeaponData data, Transform container, ICoroutineRunner coroutineRunner)
     {
-        _weaponView = UnityEngine.Object.Instantiate(data.WeaponView, container);
-        _coroutineRunner = coroutineRunner;
-
-        _damage = data.Damage;
-        _shotsPerSecond = data.ShotsPerSecond;
-        _reloadTime = data.ReloadTime;
-
-        _bulletsPerShot = data.BulletsPerShot;
-        _maxBulletsCount = data.MaxBulletsCount;
-        _currentBulletsCount = data.MaxBulletsCount;
-        _bulletSpeed = data.BulletSpeed;
-
+        CoroutineRunner = coroutineRunner;
+        Data = data;
+        TimeBetweenShots = 1 / data.ShotsPerSecond;
+        View = Object.Instantiate(data.WeaponView, container);
         InitPool(data.BulletPrefab);
     }
 
-    public void Activate()
-    {
-        _weaponView.gameObject.SetActive(true);
+    public abstract bool CanShoot { get; }
+    public abstract int MaxBullets { get; }
+    public abstract int CurrentBullets { get; }
 
-        _reloadingCoroutine = null;
-        _shootDelayingCoroutine = null;
-    }
-
-    public void Deactivate()
-    {
-        if (_reloadingCoroutine != null)
-            _coroutineRunner.StopCoroutine(_reloadingCoroutine);
-
-        if (_shootDelayingCoroutine != null)
-            _coroutineRunner.StopCoroutine(_shootDelayingCoroutine);
-
-        _weaponView.gameObject.SetActive(false);
-    }
-
-    public bool TryReload()
-    {
-        if (_reloadingCoroutine != null)
-            return false;
-
-        _weaponView.Reload();
-        _reloadingCoroutine = _coroutineRunner.StartCoroutine(Reloading());
-
-        return true;
-    }
+    public event UnityAction Shoted;
 
     public bool TryShoot()
     {
         if (CanShoot == false)
             return false;
 
-        _weaponView.Shoot();
-
-        foreach (Transform shootPoint in _weaponView.ShootPoints)
-            LaunchBullet(shootPoint);
-
-        _currentBulletsCount -= _bulletsPerShot;
-        Shoted?.Invoke();
-
-        _shootDelayingCoroutine = _coroutineRunner.StartCoroutine(ShootDelaying());
+        ShootDelayingCoroutine = CoroutineRunner.StartCoroutine(ShootDelaying());
+        PerformShot();
 
         return true;
     }
 
-    private void LaunchBullet(Transform shootPoint)
+    public virtual void Activate()
     {
-        Bullet bullet = GetItem();
-        bullet.gameObject.SetActive(true);
-        bullet.Launch(shootPoint.position, shootPoint.forward, _damage, _bulletSpeed);
+        View.gameObject.SetActive(true);
+    }
+
+    public virtual void Deactivate()
+    {
+        View.gameObject.SetActive(false);
+
+        if (ShootDelayingCoroutine != null)
+            CoroutineRunner.StopCoroutine(ShootDelayingCoroutine);
+    }
+
+    protected abstract void PerformShot();
+
+    protected void OnShoted()
+    {
+        Shoted?.Invoke();
     }
 
     private IEnumerator ShootDelaying()
     {
-        int oneSecond = 1;
+        yield return new WaitForSeconds(TimeBetweenShots);
 
-        yield return new WaitForSeconds(oneSecond / _shotsPerSecond);
-
-        _shootDelayingCoroutine = null;
-    }
-
-    private IEnumerator Reloading()
-    {
-        yield return new WaitForSeconds(_reloadTime);
-
-        _currentBulletsCount = _maxBulletsCount;
-        _reloadingCoroutine = null;
+        ShootDelayingCoroutine = null;
     }
 }

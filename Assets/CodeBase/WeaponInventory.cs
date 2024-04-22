@@ -8,10 +8,9 @@ public class WeaponInventory
 
     public int WeaponsCount => _weapons.Count;
 
-    public WeaponInventory(WeaponStaticData[] weaponData, ICoroutineRunner coroutineRunner, Transform container)
+    public WeaponInventory(List<Weapon> weapons)
     {
-        foreach (WeaponStaticData data in weaponData)
-            _weapons.Add(new Weapon(data, coroutineRunner, container));
+        _weapons.AddRange(weapons);
     }
 
     public Weapon GetWeaponByIndex(int index)

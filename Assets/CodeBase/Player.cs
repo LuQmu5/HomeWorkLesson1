@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
 
     public Transform WeaponPoint => _weaponPoint;
 
-    public void Construct(WeaponInventory inventory, WeaponShooter shooter, WeaponSwitcher weaponSwitcher, Weapon startWeapon)
+    public void Init(WeaponInventory inventory, WeaponShooter shooter, WeaponSwitcher weaponSwitcher, Weapon startWeapon)
     {
         _inventory = inventory;
         _shooter = shooter;
@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            _weaponSwitcher.SwitchToNextWeapon();
+            _shooter.SetWeapon(_weaponSwitcher.GetNextWeapon());
         }
     }
 }
