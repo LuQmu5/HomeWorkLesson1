@@ -24,6 +24,9 @@ public class SelectGameModeMenu : MonoBehaviour
             _gameModesMap.Add(++index, gameMode);
         }
 
+        _gameModesDropdown.captionText.text = "Выбрать...";
+        _startGameButton.interactable = false;
+
         _gameModesDropdown.onValueChanged.AddListener(OnGameModeSelected);
         _startGameButton.onClick.AddListener(OnStartGameButtonClicked);
     }
@@ -36,6 +39,7 @@ public class SelectGameModeMenu : MonoBehaviour
 
     private void OnGameModeSelected(int index)
     {
+        _startGameButton.interactable = true;
         _currentSelectedGameMode = _gameModesMap[index];
     }
 
