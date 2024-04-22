@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Shotgun : Weapon, IReloadable
@@ -8,6 +9,8 @@ public class Shotgun : Weapon, IReloadable
     private float _reloadTime;
     private int _bulletsPerShot;
     private Coroutine _reloadingCoroutine;
+
+    public event Action Reloaded;
 
     public Shotgun(WeaponData data, Transform container, ICoroutineRunner coroutineRunner) : base(data, container, coroutineRunner)
     {
@@ -61,6 +64,7 @@ public class Shotgun : Weapon, IReloadable
             yield return new WaitForSeconds(ReloadTime);
 
             _currentBulletsCount++;
+            Reloaded?.Invoke();
         }
 
         _reloadingCoroutine = null;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Plasmagun : Weapon, IReloadable
@@ -7,6 +8,8 @@ public class Plasmagun : Weapon, IReloadable
     private int _maxBulletsCount;
     private float _reloadTime;
     private Coroutine _reloadingCoroutine;
+
+    public event Action Reloaded;
 
     public Plasmagun(WeaponData data, Transform container, ICoroutineRunner coroutineRunner) : base(data, container, coroutineRunner)
     {
@@ -58,5 +61,6 @@ public class Plasmagun : Weapon, IReloadable
 
         _reloadingCoroutine = null;
         _currentBulletsCount = _maxBulletsCount;
+        Reloaded?.Invoke();
     }
 }

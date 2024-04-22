@@ -19,10 +19,14 @@ public class BulletsDisplay : MonoBehaviour
     private void SubscribeToNewWeaponShoot(Weapon playerStartWeapon)
     {
         if (_currentPlayerWeapon != null)
-            _currentPlayerWeapon.Shoted -= OnWeaponShoted;
+            _currentPlayerWeapon.Shoted -= OnBulletsChanged;
 
         _currentPlayerWeapon = playerStartWeapon;
-        _currentPlayerWeapon.Shoted += OnWeaponShoted;
+        _currentPlayerWeapon.Shoted += OnBulletsChanged;
+
+        if (_currentPlayerWeapon is IReloadable)
+            ((IReloadable)_currentPlayerWeapon).Reloaded += OnBulletsChanged;
+
         _text.text = $"{_currentPlayerWeapon.CurrentBullets}/{_currentPlayerWeapon.MaxBullets}";
     }
 
@@ -31,7 +35,12 @@ public class BulletsDisplay : MonoBehaviour
         _playerWeaponSwitcher.WeaponSwitched -= OnWeaponSwitched;
 
         if (_currentPlayerWeapon != null)
-            _currentPlayerWeapon.Shoted -= OnWeaponShoted;
+        {
+            _currentPlayerWeapon.Shoted -= OnBulletsChanged;
+
+            if (_currentPlayerWeapon is IReloadable)
+                ((IReloadable)_currentPlayerWeapon).Reloaded += OnBulletsChanged;
+        }
     }
 
     private void OnWeaponSwitched(Weapon weapon)
@@ -39,7 +48,7 @@ public class BulletsDisplay : MonoBehaviour
         SubscribeToNewWeaponShoot(weapon);
     }
 
-    private void OnWeaponShoted()
+    private void OnBulletsChanged()
     {
         _text.text = $"{_currentPlayerWeapon.CurrentBullets}/{_currentPlayerWeapon.MaxBullets}";
     }
