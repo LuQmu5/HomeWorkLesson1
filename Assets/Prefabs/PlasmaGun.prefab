@@ -128,4 +128,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f3b6ff97846e14bb12a50686f78374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shootPoint: {fileID: 3763480283830331062}
+  _shootPoints:
+  - {fileID: 3763480283830331062}

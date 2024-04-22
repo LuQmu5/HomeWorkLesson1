@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e069e9b4175824197ff5d4714b76e4, type: 3}
   m_Name: PlasmaGun
   m_EditorClassIdentifier: 
-  _fireRate: 1
+  _shotsPerSecond: 3
   _damage: 1
   _maxBulletsCount: 3
+  _bulletsPerShot: 1
   _bulletPrefab: {fileID: 3765500562310832437, guid: 86a549896c79841428d907e6e41d6577, type: 3}
   _weaponView: {fileID: 8007449068106987350, guid: ce84be079a629d14db81040ac847b55c, type: 3}
   _bulletSpeed: 1
