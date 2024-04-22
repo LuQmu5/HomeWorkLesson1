@@ -18,7 +18,7 @@ public class BallFactory
 
     public BallFactory(ICoroutineRunner coroutineRunner, BallData[] ballsData, Ball ballPrefab, int ballsCountOnLevel)
     {
-        int minLength = GetBallsTypeCount();
+        int minLength = ballsData.Length;
 
         if (ballsCountOnLevel < minLength)
             ballsCountOnLevel = minLength;
@@ -38,11 +38,6 @@ public class BallFactory
             _balls[i].Init(GetRandomBallData());
             _balls[i].gameObject.SetActive(false);
         }
-    }
-
-    private static int GetBallsTypeCount()
-    {
-        return System.Enum.GetValues(typeof(BallColors)).Length;
     }
 
     public void StartSpawn(Vector3 at)

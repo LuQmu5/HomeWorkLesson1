@@ -16,10 +16,12 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
 
     private BallFactory _ballFactory;
     private TargetReachHandler _targetReachHandler;
+    private BallData[] _ballsData;
 
     private void Awake()
     {
-        _ballFactory = new BallFactory(this, Resources.LoadAll<BallData>(BallsDataPath), Resources.Load<Ball>(BallPrefabPath), _ballsCountOnLevel);
+        _ballsData = Resources.LoadAll<BallData>(BallsDataPath);
+        _ballFactory = new BallFactory(this, _ballsData, Resources.Load<Ball>(BallPrefabPath), _ballsCountOnLevel);
     }
 
     private void Start()
@@ -29,6 +31,7 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
             new DestroyAllGameMode(_ballFactory.Balls),
             new DestroyAnyColorGameMode(_ballFactory.Balls),
             new DestroyAnyNumberTypeGameMode(_ballFactory.Balls),
+            new DestroyAnyNumberGameMode(_ballFactory.Balls, _ballsData.Length),
         });
 
         _selectGameModeMenu.StartGameButtonPressed += OnStartGameButtonPressed;
