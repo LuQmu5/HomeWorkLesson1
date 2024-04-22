@@ -4,9 +4,9 @@ using UnityEngine;
 // тут будут свистоперделки
 public class WeaponView : MonoBehaviour
 {
-    [SerializeField] private Transform _shootPoint;
+    [SerializeField] private Transform[] _shootPoints;
 
-    public Transform ShootPoint => _shootPoint;
+    public Transform[] ShootPoints => _shootPoints;
 
     public void Shoot()
     {

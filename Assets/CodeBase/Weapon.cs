@@ -8,9 +8,10 @@ public class Weapon : ObjectPool<Bullet>, IReloadable
     private ICoroutineRunner _coroutineRunner;
 
     private float _damage;
-    private float _fireRate;
+    private float _shotsPerSecond;
     private float _reloadTime;
 
+    private int _bulletsPerShot;
     private int _maxBulletsCount;
     private int _currentBulletsCount;
     private float _bulletSpeed;
@@ -31,9 +32,10 @@ public class Weapon : ObjectPool<Bullet>, IReloadable
         _coroutineRunner = coroutineRunner;
 
         _damage = data.Damage;
-        _fireRate = data.FireRate;
+        _shotsPerSecond = data.ShotsPerSecond;
         _reloadTime = data.ReloadTime;
 
+        _bulletsPerShot = data.BulletsPerShot;
         _maxBulletsCount = data.MaxBulletsCount;
         _currentBulletsCount = data.MaxBulletsCount;
         _bulletSpeed = data.BulletSpeed;
@@ -77,7 +79,11 @@ public class Weapon : ObjectPool<Bullet>, IReloadable
             return false;
 
         _weaponView.Shoot();
-        LaunchBullet();
+
+        foreach (Transform shootPoint in _weaponView.ShootPoints)
+            LaunchBullet(shootPoint);
+
+        _currentBulletsCount -= _bulletsPerShot;
         Shoted?.Invoke();
 
         _shootDelayingCoroutine = _coroutineRunner.StartCoroutine(ShootDelaying());
@@ -85,17 +91,18 @@ public class Weapon : ObjectPool<Bullet>, IReloadable
         return true;
     }
 
-    private void LaunchBullet()
+    private void LaunchBullet(Transform shootPoint)
     {
         Bullet bullet = GetItem();
         bullet.gameObject.SetActive(true);
-        bullet.Launch(_weaponView.ShootPoint.position, _weaponView.ShootPoint.forward, _damage, _bulletSpeed);
-        _currentBulletsCount--;
+        bullet.Launch(shootPoint.position, shootPoint.forward, _damage, _bulletSpeed);
     }
 
     private IEnumerator ShootDelaying()
     {
-        yield return new WaitForSeconds(1 / _fireRate);
+        int oneSecond = 1;
+
+        yield return new WaitForSeconds(oneSecond / _shotsPerSecond);
 
         _shootDelayingCoroutine = null;
     }
