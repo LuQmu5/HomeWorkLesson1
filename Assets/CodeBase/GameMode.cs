@@ -10,11 +10,12 @@ public abstract class GameMode
     public event Action TargetReached;
     public event Action TargetFailed;
 
-    public GameMode(IReadOnlyCollection<Ball> balls)
+    public GameMode(string target)
     {
+        Target = target;
     }
 
-    public abstract void Init();
+    public abstract void Init(IReadOnlyCollection<Ball> balls);
 
     public void Subscribe()
     {

@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class TargetReachHandler
 {
-    public TargetReachHandler(GameMode gameMode)
+    public TargetReachHandler(GameMode gameMode, IReadOnlyCollection<Ball> balls)
     {
-        gameMode.Init();
+        gameMode.Init(balls);
         gameMode.Subscribe();
 
         gameMode.TargetReached += OnTargetReached;

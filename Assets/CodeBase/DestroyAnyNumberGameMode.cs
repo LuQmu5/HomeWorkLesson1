@@ -4,16 +4,18 @@ using System.Linq;
 public class DestroyAnyNumberGameMode : GameMode
 {
     private int _targetNumber;
+    private int _numbersCount;
 
-    public DestroyAnyNumberGameMode(IReadOnlyCollection<Ball> balls, int numbersCount) : base(balls)
+    public DestroyAnyNumberGameMode(string target, int numbersCount) : base(target)
     {
-        Target = $"Уничтожить все шары с определенным числом";
-        _targetNumber = UnityEngine.Random.Range(0, numbersCount);
-        BallsLeft = balls.Where(i => i.Data.Number == _targetNumber).Count();
+        _numbersCount = numbersCount;
     }
 
-    public override void Init()
+    public override void Init(IReadOnlyCollection<Ball> balls)
     {
+        _targetNumber = UnityEngine.Random.Range(0, _numbersCount);
+        BallsLeft = balls.Where(i => i.Data.Number == _targetNumber).Count();
+
         Target = $"Уничтожить все шары с числом {_targetNumber}";
     }
 

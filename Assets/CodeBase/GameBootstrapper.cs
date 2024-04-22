@@ -12,7 +12,6 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
 
     [Header("Balls Settings")]
     [SerializeField] private Transform _ballSpawnPosition;
-    [SerializeField] private int _ballsCountOnLevel = 5;
 
     private BallFactory _ballFactory;
     private TargetReachHandler _targetReachHandler;
@@ -21,18 +20,18 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
     private void Awake()
     {
         _ballsData = Resources.LoadAll<BallData>(BallsDataPath);
-        _ballFactory = new BallFactory(this, _ballsData, Resources.Load<Ball>(BallPrefabPath), _ballsCountOnLevel);
+        _ballFactory = new BallFactory(this, _ballsData, Resources.Load<Ball>(BallPrefabPath));
     }
 
     private void Start()
     {
         _selectGameModeMenu.Init(new List<GameMode>()
         {
-            new DestroyAllGameMode(_ballFactory.Balls),
-            new DestroyAnyColorGameMode(_ballFactory.Balls),
-            new DestroyAnyNumberTypeGameMode(_ballFactory.Balls),
-            new DestroyAnyNumberGameMode(_ballFactory.Balls, _ballsData.Length),
-        });
+            new DestroyAllGameMode("”ничтожить все шары"),
+            new DestroyAnyColorGameMode("”ничтожить шары определенного цвета"),
+            new DestroyAnyNumberTypeGameMode("”ничтожить все шары определенного типа числа"),
+            new DestroyAnyNumberGameMode("”ничтожить все шары с определенным числом", _ballsData.Length),
+        }, _ballsData.Length);
 
         _selectGameModeMenu.StartGameButtonPressed += OnStartGameButtonPressed;
     }
@@ -44,11 +43,13 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
 
     private void OnStartGameButtonPressed(GameMode chosenMode)
     {
-        _targetReachHandler = new TargetReachHandler(chosenMode);
-
-        chosenMode.Init();
-        _targetTextDisplay.Init(chosenMode.Target);
         _selectGameModeMenu.gameObject.SetActive(false);
+
+        _ballFactory.Init(_selectGameModeMenu.BallsCountOnLevel);
+        chosenMode.Init(_ballFactory.Balls);
+
+        _targetReachHandler = new TargetReachHandler(chosenMode, _ballFactory.Balls);
+        _targetTextDisplay.Init(chosenMode.Target);
 
         _ballFactory.StartSpawn(_ballSpawnPosition.position);
     }

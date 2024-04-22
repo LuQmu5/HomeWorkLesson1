@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class DestroyAllGameMode : GameMode
 {
-    public DestroyAllGameMode(IReadOnlyCollection<Ball> balls) : base(balls)
+    public DestroyAllGameMode(string target) : base(target)
     {
-        BallsLeft = balls.Count;
-        Target = "Уничтожить все шары";
     }
 
-    public override void Init()
+    public override void Init(IReadOnlyCollection<Ball> balls)
     {
-        Debug.Log("Init");
+        BallsLeft = balls.Count;
     }
 
     protected override void OnBallDestroyed(BallData destroyedBallData)

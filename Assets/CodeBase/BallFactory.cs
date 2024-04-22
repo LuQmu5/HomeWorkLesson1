@@ -10,29 +10,31 @@ public class BallFactory
     private readonly ICoroutineRunner _coroutineRunner;
     private WaitForSeconds _spawnDelay;
 
-    private Ball[] _balls;
     private BallData[] _ballsData;
+    private Ball _ballPrefab;
+
+    private Ball[] _balls;
     private List<BallData> _ballsDataListTemp;
 
     public IReadOnlyCollection<Ball> Balls => _balls;
 
-    public BallFactory(ICoroutineRunner coroutineRunner, BallData[] ballsData, Ball ballPrefab, int ballsCountOnLevel)
+    public BallFactory(ICoroutineRunner coroutineRunner, BallData[] ballsData, Ball ballPrefab)
     {
-        int minLength = ballsData.Length;
-
-        if (ballsCountOnLevel < minLength)
-            ballsCountOnLevel = minLength;
-
         _coroutineRunner = coroutineRunner;
         _spawnDelay = new WaitForSeconds(TimeBetweenSpawn);
 
         _ballsData = ballsData;
+        _ballPrefab = ballPrefab;
+    }
+
+    public void Init(int ballsCountOnLevel)
+    {
         _balls = new Ball[ballsCountOnLevel];
         _ballsDataListTemp = new List<BallData>();
 
         for (int i = 0; i < ballsCountOnLevel; i++)
         {
-            Ball newBall = Object.Instantiate(ballPrefab);
+            Ball newBall = Object.Instantiate(_ballPrefab);
 
             _balls[i] = newBall;
             _balls[i].Init(GetRandomBallData());

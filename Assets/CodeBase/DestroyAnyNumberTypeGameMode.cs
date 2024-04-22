@@ -6,16 +6,16 @@ public class DestroyAnyNumberTypeGameMode : GameMode
 {
     private BallNumbersType _targetNumberType;
 
-    public DestroyAnyNumberTypeGameMode(IReadOnlyCollection<Ball> balls) : base(balls)
+    public DestroyAnyNumberTypeGameMode(string target) : base(target)
     {
-        Target = $"Уничтожить все шары определенного типа числа";
+    }
+
+    public override void Init(IReadOnlyCollection<Ball> balls)
+    {
         var allNumbersTypes = Enum.GetValues(typeof(BallNumbersType));
         _targetNumberType = (BallNumbersType)allNumbersTypes.GetValue(UnityEngine.Random.Range(0, allNumbersTypes.Length));
         BallsLeft = balls.Where(i => i.Data.NumberType == _targetNumberType).Count();
-    }
 
-    public override void Init()
-    {
         Target = $"Уничтожить все шары с {_targetNumberType} типом числа";
     }
 

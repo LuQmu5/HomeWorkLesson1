@@ -27,6 +27,10 @@ public class Ball : MonoBehaviour
 
     private void OnMouseDown()
     {
+        print(Data.Color);
+        print(Data.Number);
+        print(Data.NumberType);
+
         Destroyed?.Invoke(Data);
         gameObject.SetActive(false);
     }

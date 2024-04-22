@@ -7,16 +7,15 @@ public class DestroyAnyColorGameMode : GameMode
 {
     private BallColors _targetColor;
 
-    public DestroyAnyColorGameMode(IReadOnlyCollection<Ball> balls) : base(balls)
+    public DestroyAnyColorGameMode(string target) : base(target)
     {
-        Target = $"Уничтожить все шары определенного цвета";
+    }
+
+    public override void Init(IReadOnlyCollection<Ball> balls)
+    {
         var allColors = Enum.GetValues(typeof(BallColors));
         _targetColor = (BallColors)allColors.GetValue(UnityEngine.Random.Range(0, allColors.Length));
         BallsLeft = balls.Where(i => i.Data.Color == _targetColor).Count();
-    }
-
-    public override void Init()
-    {
         Target = $"Уничтожить все шары {_targetColor} цвета";
     }
 
