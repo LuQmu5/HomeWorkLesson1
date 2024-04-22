@@ -11,7 +11,6 @@ public class DestroyAnyColorGameMode : GameMode
         _targetType = targetType;
         Target = $"Уничтожить все {targetType} шары";
         BallsLeft = balls.Where(i => i.Type == targetType).Count();
-        Debug.Log(BallsLeft);
     }
 
     protected override void OnBallDestroyed(BallTypes destroyedBallType)

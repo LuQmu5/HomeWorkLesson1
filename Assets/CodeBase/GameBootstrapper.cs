@@ -29,6 +29,7 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
             new DestroyAnyColorGameMode(_ballFactory.Balls, BallTypes.Red),
             new DestroyAnyColorGameMode(_ballFactory.Balls, BallTypes.Green),
             new DestroyAnyColorGameMode(_ballFactory.Balls, BallTypes.White),
+            new DestroyAnyColorGameMode(_ballFactory.Balls, BallTypes.Yellow),
         });
 
         _selectGameModeMenu.StartGameButtonPressed += OnStartGameButtonPressed;
