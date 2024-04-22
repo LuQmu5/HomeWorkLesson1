@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shotsPerSecond: 2
   _damage: 1
-  _maxBulletsCount: 5
-  _bulletsPerShot: 1
+  _maxBulletsCount: 6
+  _bulletsPerShot: 2
   _bulletPrefab: {fileID: 3765500562310832437, guid: 86a549896c79841428d907e6e41d6577, type: 3}
   _weaponView: {fileID: 8007449068106987350, guid: 21cd254fdc1bab7419dfb540eec7b29e, type: 3}
-  _bulletSpeed: 1
+  _bulletSpeed: 2
   _reloadTime: 1
