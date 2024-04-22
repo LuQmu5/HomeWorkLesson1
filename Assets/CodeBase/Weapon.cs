@@ -28,6 +28,8 @@ public abstract class Weapon : ObjectPool<Bullet>, IShootable
 
     public bool TryShoot()
     {
+        Debug.Log(CanShoot);
+
         if (CanShoot == false)
             return false;
 
@@ -44,10 +46,10 @@ public abstract class Weapon : ObjectPool<Bullet>, IShootable
 
     public virtual void Deactivate()
     {
-        View.gameObject.SetActive(false);
-
         if (ShootDelayingCoroutine != null)
             CoroutineRunner.StopCoroutine(ShootDelayingCoroutine);
+
+        View.gameObject.SetActive(false);
     }
 
     protected abstract void PerformShot();
