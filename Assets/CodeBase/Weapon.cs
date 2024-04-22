@@ -47,7 +47,10 @@ public abstract class Weapon : ObjectPool<Bullet>, IShootable
     public virtual void Deactivate()
     {
         if (ShootDelayingCoroutine != null)
+        {
             CoroutineRunner.StopCoroutine(ShootDelayingCoroutine);
+            ShootDelayingCoroutine = null;
+        }
 
         View.gameObject.SetActive(false);
     }
