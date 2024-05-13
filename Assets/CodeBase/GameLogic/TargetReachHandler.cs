@@ -1,27 +1,38 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Zenject;
 
-public class TargetReachHandler
+public class TargetReachHandler : IDisposable
 {
-    public TargetReachHandler(GameMode gameMode, IReadOnlyCollection<Ball> balls)
-    {
-        gameMode.Init(balls);
-        gameMode.Subscribe();
+    private GameManagement _gameManagement;
 
-        gameMode.TargetReached += OnTargetReached;
-        gameMode.TargetFailed += OnTargetFailed;
+    [Inject]
+    public TargetReachHandler(GameManagement gameManagement, BallSpawner ballSpawner)
+    {
+        _gameManagement = gameManagement;
+
+        _gameManagement.SelectedGameMode.Init(ballSpawner.SpawnedBalls);
+        _gameManagement.SelectedGameMode.Subscribe();
+
+        _gameManagement.SelectedGameMode.TargetReached += OnTargetReached;
+        _gameManagement.SelectedGameMode.TargetFailed += OnTargetFailed;
+    }
+
+    public void Dispose()
+    {
+        _gameManagement.SelectedGameMode.TargetReached -= OnTargetReached;
+        _gameManagement.SelectedGameMode.TargetFailed -= OnTargetFailed;
     }
 
     private void OnTargetReached()
     {
         Debug.Log("Victory!");
-        SceneManager.LoadScene(0);
+        Time.timeScale = 0;
     }
 
     private void OnTargetFailed()
     {
         Debug.Log("Defeat...");
-        SceneManager.LoadScene(0);
+        Time.timeScale = 0;
     }
 }

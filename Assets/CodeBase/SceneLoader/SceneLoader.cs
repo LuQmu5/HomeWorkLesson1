@@ -15,8 +15,8 @@ public class SceneLoader
         _sceneLoader = sceneLoader;
     }
 
-    public void Load(int sceneID, Action<DiContainer> action = null)
+    public void Load(string sceneName, Action<DiContainer> action = null)
     { 
-        _sceneLoader.LoadScene(sceneID, LoadSceneMode.Single, container => action?.Invoke(container));
+        _sceneLoader.LoadScene(sceneName, LoadSceneMode.Single, container => action?.Invoke(container));
     }
 }

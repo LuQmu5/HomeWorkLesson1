@@ -1,4 +1,4 @@
 public static class Constants
 {
-    public const int BallsCount = 16;
+    public const int MinBallsCount = 16;
 }

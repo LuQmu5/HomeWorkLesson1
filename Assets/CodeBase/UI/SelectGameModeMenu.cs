@@ -14,12 +14,13 @@ public class SelectGameModeMenu : MonoBehaviour
 
     private Dictionary<int, GameMode> _gameModesMap = new Dictionary<int, GameMode>();
     private GameMode _currentSelectedGameMode;
-    private int _minBallsCount = Constants.BallsCount;
+    private int _minBallsCount = Constants.MinBallsCount;
 
     public int BallsCountOnLevel => int.Parse(_inputField.text);
 
     public event Action StartGameButtonPressed;
     public event Action<GameMode> GameModeSelected;
+    public event Action<int> BallsCountOnLevelChanged;
 
     [Inject]
     public void Construct(IReadOnlyCollection<GameMode> gameModes)
@@ -69,6 +70,8 @@ public class SelectGameModeMenu : MonoBehaviour
         {
             if (result < _minBallsCount)
                 _inputField.text = _minBallsCount.ToString();
+            else
+                BallsCountOnLevelChanged?.Invoke(result);
         }
         else
         {

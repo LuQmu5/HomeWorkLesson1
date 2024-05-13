@@ -19,12 +19,14 @@ public class GameManagementMediator : IDisposable
 
         _selectGameModeMenu.GameModeSelected += OnGameModeSelected;
         _selectGameModeMenu.StartGameButtonPressed += OnStartGameButtonPressed;
+        _selectGameModeMenu.BallsCountOnLevelChanged += OnBallsCountOnLevelChanged;
     }
 
     public void Dispose()
     {
         _selectGameModeMenu.GameModeSelected -= OnGameModeSelected;
         _selectGameModeMenu.StartGameButtonPressed -= OnStartGameButtonPressed;
+        _selectGameModeMenu.BallsCountOnLevelChanged -= OnBallsCountOnLevelChanged;
     }
 
     private void OnGameModeSelected(GameMode selectedGameMode)
@@ -32,9 +34,14 @@ public class GameManagementMediator : IDisposable
         _gameManagement.SetGameMode(selectedGameMode);
     }
 
+    private void OnBallsCountOnLevelChanged(int value)
+    {
+        _gameManagement.SetBallsCountOnLevel(value);
+    }
+
     private void OnStartGameButtonPressed()
     {
-        _sceneLoader.Load(1, container =>
+        _sceneLoader.Load("Game", container =>
         {
             container.BindInstance(_gameManagement).AsSingle();
         });

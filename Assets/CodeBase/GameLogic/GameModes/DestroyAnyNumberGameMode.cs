@@ -12,7 +12,7 @@ public class DestroyAnyNumberGameMode : GameMode
 
     public override void Init(IReadOnlyCollection<Ball> balls)
     {
-        _targetNumber = UnityEngine.Random.Range(0, Constants.BallsCount);
+        _targetNumber = UnityEngine.Random.Range(0, Constants.MinBallsCount);
         BallsLeft = balls.Where(i => i.Data.Number == _targetNumber).Count();
 
         Target = $"Уничтожить все шары с числом {_targetNumber}";

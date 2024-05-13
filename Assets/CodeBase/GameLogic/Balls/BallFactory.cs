@@ -1,64 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class BallFactory
 {
-    private const float TimeBetweenSpawn = 0.1f;
-
-    private readonly ICoroutineRunner _coroutineRunner;
-    private WaitForSeconds _spawnDelay;
+    private const string BallsDataPath = "StaticData/Balls";
+    private const string BallPrefabPath = "BallPrefab";
 
     private BallData[] _ballsData;
     private Ball _ballPrefab;
 
-    private Ball[] _balls;
-    private List<BallData> _ballsDataListTemp;
+    private List<BallData> _ballsDataListTemp = new List<BallData>();
 
-    public IReadOnlyCollection<Ball> Balls => _balls;
-
-    public BallFactory(ICoroutineRunner coroutineRunner, BallData[] ballsData, Ball ballPrefab)
+    public BallFactory()
     {
-        _coroutineRunner = coroutineRunner;
-        _spawnDelay = new WaitForSeconds(TimeBetweenSpawn);
-
-        _ballsData = ballsData;
-        _ballPrefab = ballPrefab;
+        _ballsData = Resources.LoadAll<BallData>(BallsDataPath);
+        _ballPrefab = Resources.Load<Ball>(BallPrefabPath);
     }
 
-    public void Init(int ballsCountOnLevel)
-    {
-        _balls = new Ball[ballsCountOnLevel];
-        _ballsDataListTemp = new List<BallData>();
-
-        for (int i = 0; i < ballsCountOnLevel; i++)
-        {
-            Ball newBall = Object.Instantiate(_ballPrefab);
-
-            _balls[i] = newBall;
-            _balls[i].Init(GetRandomBallData());
-            _balls[i].gameObject.SetActive(false);
-        }
-    }
-
-    public void StartSpawn(Vector3 at)
-    {
-        _coroutineRunner.StartCoroutine(Spawning(at));
-    }
-
-    private IEnumerator Spawning(Vector3 at)
-    {
-        foreach (Ball ball in _balls)
-        {
-            ball.gameObject.SetActive(true);
-            ball.transform.position = at;
-
-            yield return _spawnDelay;
-        }
-    }
-
-    private BallData GetRandomBallData()
+    public Ball GetBallWithRandomData()
     {
         if (_ballsDataListTemp.Count == 0)
             _ballsDataListTemp.AddRange(_ballsData);
@@ -67,6 +26,9 @@ public class BallFactory
         BallData randomBallData = _ballsDataListTemp[randomIndex];
         _ballsDataListTemp.RemoveAt(randomIndex);
 
-        return randomBallData;
+        Ball newBall = Object.Instantiate(_ballPrefab);
+        newBall.Init(randomBallData);
+
+        return newBall;
     }
 }
